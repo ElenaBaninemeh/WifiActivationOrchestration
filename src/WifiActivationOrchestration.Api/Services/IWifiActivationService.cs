@@ -4,7 +4,5 @@ namespace WifiActivationOrchestration.Api.Services;
 
 public interface IWifiActivationService
 {
-    Task<WifiActivationResponse> ActivateAsync(
-        CustomerActivationRequest request,
-        CancellationToken cancellationToken);
+    Task<WifiActivationResult> ActivateAsync(CustomerActivationRequest request, CancellationToken cancellationToken);
 }

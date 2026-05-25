@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0AB3BF05
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WifiActivationOrchestration.Api.Tests", "tests\WifiActivationOrchestration.Api.Tests\WifiActivationOrchestration.Api.Tests.csproj", "{D3EDE744-16B4-46E2-A39B-1DFA57E5F1FC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{07C2787E-EAC7-C090-1BA3-A61EC2A24D84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WifiActivationOrchestration.MockServer", "tools\WifiActivationOrchestration.MockServer\WifiActivationOrchestration.MockServer.csproj", "{46C266D9-F230-455E-AB55-89E6E8C3417E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,18 @@ Global
 		{D3EDE744-16B4-46E2-A39B-1DFA57E5F1FC}.Release|x64.Build.0 = Release|Any CPU
 		{D3EDE744-16B4-46E2-A39B-1DFA57E5F1FC}.Release|x86.ActiveCfg = Release|Any CPU
 		{D3EDE744-16B4-46E2-A39B-1DFA57E5F1FC}.Release|x86.Build.0 = Release|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Debug|x64.Build.0 = Debug|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Debug|x86.Build.0 = Debug|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Release|x64.ActiveCfg = Release|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Release|x64.Build.0 = Release|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Release|x86.ActiveCfg = Release|Any CPU
+		{46C266D9-F230-455E-AB55-89E6E8C3417E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,5 +68,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{10ABD159-00CB-49EF-B4FA-779D0C9DBD13} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{D3EDE744-16B4-46E2-A39B-1DFA57E5F1FC} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
+		{46C266D9-F230-455E-AB55-89E6E8C3417E} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
 	EndGlobalSection
 EndGlobal

@@ -1,9 +1,40 @@
+using Microsoft.Extensions.Options;
+using WifiActivationOrchestration.Api.Clients;
+using WifiActivationOrchestration.Api.Configuration;
 using WifiActivationOrchestration.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+builder.Services
+    .AddOptions<NetworkApiOptions>()
+    .Bind(builder.Configuration.GetRequiredSection(NetworkApiOptions.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+builder.Services.AddHttpClient<INetworkInfrastructureClient, NetworkInfrastructureClient>(
+    (serviceProvider, httpClient) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<NetworkApiOptions>>()
+            .Value;
+
+        httpClient.BaseAddress = new Uri(options.InfrastructureBaseUrl);
+        httpClient.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
+    });
+
+builder.Services.AddHttpClient<INetworkControllerClient, NetworkControllerClient>(
+    (serviceProvider, httpClient) =>
+    {
+        var options = serviceProvider
+            .GetRequiredService<IOptions<NetworkApiOptions>>()
+            .Value;
+
+        httpClient.BaseAddress = new Uri(options.ControllerBaseUrl);
+        httpClient.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
+    });
 
 builder.Services.AddScoped<IWifiActivationService, WifiActivationService>();
 
