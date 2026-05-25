@@ -1,6 +1,6 @@
-﻿using WifiActivationOrchestration.Api.Models;
+﻿using WifiActivationOrchestration.Api.Models.External;
 
-namespace WifiActivationOrchestration.Api.Clients;
+namespace WifiActivationOrchestration.Api.Services.External;
 
 public interface INetworkInfrastructureClient
 {

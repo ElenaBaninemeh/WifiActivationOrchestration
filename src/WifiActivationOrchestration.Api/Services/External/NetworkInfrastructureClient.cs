@@ -1,9 +1,9 @@
 ﻿using System.Net.Http.Json;
 using Microsoft.Extensions.Options;
 using WifiActivationOrchestration.Api.Configuration;
-using WifiActivationOrchestration.Api.Models;
+using WifiActivationOrchestration.Api.Models.External;
 
-namespace WifiActivationOrchestration.Api.Clients;
+namespace WifiActivationOrchestration.Api.Services.External;
 
 public sealed class NetworkInfrastructureClient : INetworkInfrastructureClient
 {

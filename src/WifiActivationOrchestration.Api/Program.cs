@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
-using WifiActivationOrchestration.Api.Clients;
 using WifiActivationOrchestration.Api.Configuration;
 using WifiActivationOrchestration.Api.Services;
+using WifiActivationOrchestration.Api.Services.External;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,14 +1,15 @@
-﻿using WifiActivationOrchestration.Api.Clients;
-using WifiActivationOrchestration.Api.Models;
+﻿using System.Text.Json;
+using WifiActivationOrchestration.Api.Mapping;
+using WifiActivationOrchestration.Api.Models.External;
+using WifiActivationOrchestration.Api.Models.Requests;
+using WifiActivationOrchestration.Api.Models.Responses;
+using WifiActivationOrchestration.Api.Models.Results;
+using WifiActivationOrchestration.Api.Services.External;
 
 namespace WifiActivationOrchestration.Api.Services;
 
 public sealed class WifiActivationService : IWifiActivationService
 {
-    private const string CustomerIdCharacteristic = "customerId";
-    private const string CustomerAddressCharacteristic = "customerAddress";
-    private const string SpeedProfileCharacteristic = "speedProfile";
-
     private readonly INetworkInfrastructureClient _infrastructureClient;
     private readonly INetworkControllerClient _controllerClient;
     private readonly ILogger<WifiActivationService> _logger;
@@ -27,13 +28,9 @@ public sealed class WifiActivationService : IWifiActivationService
         CustomerActivationRequest request,
         CancellationToken cancellationToken)
     {
-        var customerId = GetCharacteristicValue(request, CustomerIdCharacteristic);
-        var customerAddress = GetCharacteristicValue(request, CustomerAddressCharacteristic);
-        var requestedSpeedProfile = GetCharacteristicValue(request, SpeedProfileCharacteristic);
+        var command = CustomerActivationRequestMapper.ToCommand(request);
 
-        if (string.IsNullOrWhiteSpace(customerId) ||
-            string.IsNullOrWhiteSpace(customerAddress) ||
-            string.IsNullOrWhiteSpace(requestedSpeedProfile))
+        if (command is null)
         {
             return WifiActivationResult.InvalidRequest(
                 "Request is missing customerId, customerAddress, or speedProfile.");
@@ -47,19 +44,19 @@ public sealed class WifiActivationService : IWifiActivationService
             var speedProfile = infrastructureResponse.SpeedProfiles.FirstOrDefault(profile =>
                 string.Equals(
                     profile.Code,
-                    requestedSpeedProfile,
+                    command.SpeedProfile,
                     StringComparison.OrdinalIgnoreCase));
 
             if (speedProfile is null)
             {
                 return WifiActivationResult.SpeedProfileNotFound(
-                    $"Speed profile '{requestedSpeedProfile}' was not found.");
+                    $"Speed profile '{command.SpeedProfile}' was not found.");
             }
 
             var controllerRequest = new NetworkControllerActivationRequest
             {
-                CustomerId = customerId,
-                CustomerAddress = customerAddress,
+                CustomerId = command.CustomerId,
+                CustomerAddress = command.CustomerAddress,
                 UpstreamSpeed = speedProfile.UploadSpeedMbps,
                 DownstreamSpeed = speedProfile.DownloadSpeedMbps
             };
@@ -70,9 +67,9 @@ public sealed class WifiActivationService : IWifiActivationService
 
             var response = new WifiActivationResponse
             {
-                ExternalId = request.ExternalId,
-                CustomerId = customerId,
-                CustomerAddress = customerAddress,
+                ExternalId = command.ExternalId,
+                CustomerId = command.CustomerId,
+                CustomerAddress = command.CustomerAddress,
                 SpeedProfile = speedProfile.Code,
                 UpstreamSpeed = speedProfile.UploadSpeedMbps,
                 DownstreamSpeed = speedProfile.DownloadSpeedMbps,
@@ -81,11 +78,21 @@ public sealed class WifiActivationService : IWifiActivationService
 
             return WifiActivationResult.Accepted(response);
         }
+        catch (JsonException exception)
+        {
+            _logger.LogWarning(
+                exception,
+                "WiFi activation failed because an external network API returned invalid JSON for customer {CustomerId}.",
+                command.CustomerId);
+
+            return WifiActivationResult.DependencyFailure(
+                "An external network API returned an invalid response.");
+        }
         catch (TaskCanceledException) when (!cancellationToken.IsCancellationRequested)
         {
             _logger.LogWarning(
                 "WiFi activation timed out for customer {CustomerId}.",
-                customerId);
+                command.CustomerId);
 
             return WifiActivationResult.DependencyTimeout(
                 "A timeout occurred while communicating with an external network API.");
@@ -95,38 +102,10 @@ public sealed class WifiActivationService : IWifiActivationService
             _logger.LogWarning(
                 exception,
                 "WiFi activation failed while communicating with an external network API for customer {CustomerId}.",
-                customerId);
+                command.CustomerId);
 
             return WifiActivationResult.DependencyFailure(
                 "Failed to communicate with an external network API.");
         }
-    }
-
-    private static string? GetCharacteristicValue(
-        CustomerActivationRequest request,
-        string characteristicName)
-    {
-        var characteristic = request
-            .OrderItem?
-            .Service?
-            .ServiceCharacteristic
-            .FirstOrDefault(item =>
-                string.Equals(
-                    item.Name,
-                    characteristicName,
-                    StringComparison.OrdinalIgnoreCase));
-
-        if (characteristic?.Value is null)
-        {
-            return null;
-        }
-
-        return characteristicName switch
-        {
-            CustomerIdCharacteristic => characteristic.Value.CustomerId,
-            CustomerAddressCharacteristic => characteristic.Value.CustomerAddress,
-            SpeedProfileCharacteristic => characteristic.Value.SpeedProfile,
-            _ => null
-        };
     }
 }
