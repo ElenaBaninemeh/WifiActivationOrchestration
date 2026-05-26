@@ -1,4 +1,4 @@
-﻿namespace WifiActivationOrchestration.Api.Models.Responses;
+﻿namespace WifiActivationOrchestration.Api.Contracts.Responses;
 
 public sealed record WifiActivationResponse
 {

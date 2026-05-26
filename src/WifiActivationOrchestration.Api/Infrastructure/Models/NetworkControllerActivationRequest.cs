@@ -1,4 +1,4 @@
-﻿namespace WifiActivationOrchestration.Api.Models.External;
+﻿namespace WifiActivationOrchestration.Api.Infrastructure.Models;
 
 public sealed class NetworkControllerActivationRequest
 {

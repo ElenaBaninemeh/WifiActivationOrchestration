@@ -1,5 +1,5 @@
-﻿using WifiActivationOrchestration.Api.Mapping;
-using WifiActivationOrchestration.Api.Models.Requests;
+﻿using WifiActivationOrchestration.Api.Application.Mapping;
+using WifiActivationOrchestration.Api.Contracts.Requests;
 using WifiActivationOrchestration.Api.Tests.Fixtures;
 
 namespace WifiActivationOrchestration.Api.Tests.Mapping;

@@ -1,4 +1,4 @@
-﻿namespace WifiActivationOrchestration.Api.Models.Requests;
+﻿namespace WifiActivationOrchestration.Api.Domain.Constants;
 
 public static class CharacteristicNames
 {

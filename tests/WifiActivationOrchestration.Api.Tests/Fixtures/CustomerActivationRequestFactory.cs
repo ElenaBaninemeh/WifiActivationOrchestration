@@ -1,4 +1,5 @@
-﻿using WifiActivationOrchestration.Api.Models.Requests;
+﻿using WifiActivationOrchestration.Api.Contracts.Requests;
+using WifiActivationOrchestration.Api.Domain.Constants;
 
 namespace WifiActivationOrchestration.Api.Tests.Fixtures;
 

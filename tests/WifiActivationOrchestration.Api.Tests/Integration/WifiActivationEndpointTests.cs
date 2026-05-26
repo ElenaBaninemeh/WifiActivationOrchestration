@@ -1,10 +1,10 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
-using WifiActivationOrchestration.Api.Configuration;
-using WifiActivationOrchestration.Api.Models.Results;
-using WifiActivationOrchestration.Api.Services;
-using WifiActivationOrchestration.Api.Services.External;
+using WifiActivationOrchestration.Api.Application.Common;
+using WifiActivationOrchestration.Api.Application.Services;
+using WifiActivationOrchestration.Api.Infrastructure.Configuration;
+using WifiActivationOrchestration.Api.Infrastructure.Services;
 using WifiActivationOrchestration.Api.Tests.Fixtures;
 using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
@@ -100,10 +100,10 @@ public sealed class WifiActivationHttpIntegrationTests : IDisposable
             options,
             NullLogger<NetworkInfrastructureClient>.Instance);
 
-        var controllerClient = new NetworkControllerClient(
+        var controllerClient = new NetworkActivationService(
             controllerHttpClient,
             options,
-            NullLogger<NetworkControllerClient>.Instance);
+            NullLogger<NetworkActivationService>.Instance);
 
         return new WifiActivationService(
             infrastructureClient,

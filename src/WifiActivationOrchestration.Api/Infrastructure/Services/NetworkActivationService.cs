@@ -1,20 +1,19 @@
-﻿using System.Net.Http.Json;
-using Microsoft.Extensions.Options;
-using WifiActivationOrchestration.Api.Configuration;
-using WifiActivationOrchestration.Api.Models.External;
+﻿using Microsoft.Extensions.Options;
+using WifiActivationOrchestration.Api.Infrastructure.Configuration;
+using WifiActivationOrchestration.Api.Infrastructure.Models;
 
-namespace WifiActivationOrchestration.Api.Services.External;
+namespace WifiActivationOrchestration.Api.Infrastructure.Services;
 
-public sealed class NetworkControllerClient : INetworkControllerClient
+public sealed class NetworkActivationService : INetworkActivationService
 {
     private readonly HttpClient _httpClient;
     private readonly NetworkApiOptions _options;
-    private readonly ILogger<NetworkControllerClient> _logger;
+    private readonly ILogger<NetworkActivationService> _logger;
 
-    public NetworkControllerClient(
+    public NetworkActivationService(
         HttpClient httpClient,
         IOptions<NetworkApiOptions> options,
-        ILogger<NetworkControllerClient> logger)
+        ILogger<NetworkActivationService> logger)
     {
         _httpClient = httpClient;
         _options = options.Value;

@@ -1,6 +1,7 @@
-﻿using WifiActivationOrchestration.Api.Models.Requests;
+﻿using WifiActivationOrchestration.Api.Contracts.Requests;
+using WifiActivationOrchestration.Api.Domain.Constants;
 
-namespace WifiActivationOrchestration.Api.Mapping;
+namespace WifiActivationOrchestration.Api.Application.Mapping;
 
 public sealed record ActivationCommand(
     string? ExternalId,

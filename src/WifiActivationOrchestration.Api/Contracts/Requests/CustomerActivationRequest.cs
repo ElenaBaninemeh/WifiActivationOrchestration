@@ -1,4 +1,4 @@
-﻿namespace WifiActivationOrchestration.Api.Models.Requests;
+﻿namespace WifiActivationOrchestration.Api.Contracts.Requests;
 
 public sealed class CustomerActivationRequest
 {

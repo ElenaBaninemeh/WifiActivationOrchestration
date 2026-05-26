@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
-using WifiActivationOrchestration.Api.Configuration;
-using WifiActivationOrchestration.Api.Services;
-using WifiActivationOrchestration.Api.Services.External;
+using WifiActivationOrchestration.Api.Application.Services;
+using WifiActivationOrchestration.Api.Infrastructure.Configuration;
+using WifiActivationOrchestration.Api.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +25,7 @@ builder.Services.AddHttpClient<INetworkInfrastructureClient, NetworkInfrastructu
         httpClient.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
     });
 
-builder.Services.AddHttpClient<INetworkControllerClient, NetworkControllerClient>(
+builder.Services.AddHttpClient<INetworkActivationService, NetworkActivationService>(
     (serviceProvider, httpClient) =>
     {
         var options = serviceProvider

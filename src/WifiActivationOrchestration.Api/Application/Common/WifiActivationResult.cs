@@ -1,6 +1,6 @@
-﻿using WifiActivationOrchestration.Api.Models.Responses;
+﻿using WifiActivationOrchestration.Api.Contracts.Responses;
 
-namespace WifiActivationOrchestration.Api.Models.Results;
+namespace WifiActivationOrchestration.Api.Application.Common;
 
 public enum WifiActivationStatus
 {

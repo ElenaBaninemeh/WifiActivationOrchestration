@@ -1,4 +1,4 @@
-﻿using WifiActivationOrchestration.Api.Models.External;
+﻿using WifiActivationOrchestration.Api.Infrastructure.Models;
 
 namespace WifiActivationOrchestration.Api.Tests.Fixtures;
 

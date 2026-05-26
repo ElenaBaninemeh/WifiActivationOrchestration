@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
 using NSubstitute;
+using WifiActivationOrchestration.Api.Application.Common;
+using WifiActivationOrchestration.Api.Application.Services;
+using WifiActivationOrchestration.Api.Contracts.Responses;
 using WifiActivationOrchestration.Api.Controllers;
-using WifiActivationOrchestration.Api.Models.Responses;
-using WifiActivationOrchestration.Api.Models.Results;
-using WifiActivationOrchestration.Api.Services;
 using WifiActivationOrchestration.Api.Tests.Fixtures;
 
 namespace WifiActivationOrchestration.Api.Tests.Controllers;

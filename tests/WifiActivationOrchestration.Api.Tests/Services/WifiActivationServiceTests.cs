@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
-using WifiActivationOrchestration.Api.Models.External;
-using WifiActivationOrchestration.Api.Models.Results;
-using WifiActivationOrchestration.Api.Services;
-using WifiActivationOrchestration.Api.Services.External;
+using WifiActivationOrchestration.Api.Application.Common;
+using WifiActivationOrchestration.Api.Application.Services;
+using WifiActivationOrchestration.Api.Infrastructure.Models;
+using WifiActivationOrchestration.Api.Infrastructure.Services;
 using WifiActivationOrchestration.Api.Tests.Fixtures;
 
 namespace WifiActivationOrchestration.Api.Tests.Services;
@@ -12,13 +12,13 @@ namespace WifiActivationOrchestration.Api.Tests.Services;
 public sealed class WifiActivationServiceTests
 {
     private readonly INetworkInfrastructureClient _infrastructureClient;
-    private readonly INetworkControllerClient _controllerClient;
+    private readonly INetworkActivationService _controllerClient;
     private readonly ILogger<WifiActivationService> _logger;
 
     public WifiActivationServiceTests()
     {
         _infrastructureClient = Substitute.For<INetworkInfrastructureClient>();
-        _controllerClient = Substitute.For<INetworkControllerClient>();
+        _controllerClient = Substitute.For<INetworkActivationService>();
         _logger = Substitute.For<ILogger<WifiActivationService>>();
     }
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WifiActivationOrchestration.Api.Configuration;
+namespace WifiActivationOrchestration.Api.Infrastructure.Configuration;
 
 public sealed class NetworkApiOptions
 {

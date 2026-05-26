@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WifiActivationOrchestration.Api.Models.Requests;
-using WifiActivationOrchestration.Api.Models.Responses;
-using WifiActivationOrchestration.Api.Models.Results;
-using WifiActivationOrchestration.Api.Services;
+using WifiActivationOrchestration.Api.Application.Common;
+using WifiActivationOrchestration.Api.Application.Services;
+using WifiActivationOrchestration.Api.Contracts.Requests;
+using WifiActivationOrchestration.Api.Contracts.Responses;
 
 namespace WifiActivationOrchestration.Api.Controllers;
 

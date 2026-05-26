@@ -1,22 +1,22 @@
 ﻿using System.Text.Json;
-using WifiActivationOrchestration.Api.Mapping;
-using WifiActivationOrchestration.Api.Models.External;
-using WifiActivationOrchestration.Api.Models.Requests;
-using WifiActivationOrchestration.Api.Models.Responses;
-using WifiActivationOrchestration.Api.Models.Results;
-using WifiActivationOrchestration.Api.Services.External;
+using WifiActivationOrchestration.Api.Application.Common;
+using WifiActivationOrchestration.Api.Application.Mapping;
+using WifiActivationOrchestration.Api.Contracts.Requests;
+using WifiActivationOrchestration.Api.Contracts.Responses;
+using WifiActivationOrchestration.Api.Infrastructure.Models;
+using WifiActivationOrchestration.Api.Infrastructure.Services;
 
-namespace WifiActivationOrchestration.Api.Services;
+namespace WifiActivationOrchestration.Api.Application.Services;
 
 public sealed class WifiActivationService : IWifiActivationService
 {
     private readonly INetworkInfrastructureClient _infrastructureClient;
-    private readonly INetworkControllerClient _controllerClient;
+    private readonly INetworkActivationService _controllerClient;
     private readonly ILogger<WifiActivationService> _logger;
 
     public WifiActivationService(
         INetworkInfrastructureClient infrastructureClient,
-        INetworkControllerClient controllerClient,
+        INetworkActivationService controllerClient,
         ILogger<WifiActivationService> logger)
     {
         _infrastructureClient = infrastructureClient;
