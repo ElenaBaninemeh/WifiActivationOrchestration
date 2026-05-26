@@ -1,6 +1,6 @@
 ﻿using WifiActivationOrchestration.Api.Models.Requests;
 
-namespace WifiActivationOrchestration.Api.Tests.TestData;
+namespace WifiActivationOrchestration.Api.Tests.Fixtures;
 
 public static class CustomerActivationRequestFactory
 {

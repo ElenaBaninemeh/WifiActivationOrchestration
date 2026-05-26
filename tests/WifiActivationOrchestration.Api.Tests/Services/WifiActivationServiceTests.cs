@@ -5,7 +5,7 @@ using WifiActivationOrchestration.Api.Models.External;
 using WifiActivationOrchestration.Api.Models.Results;
 using WifiActivationOrchestration.Api.Services;
 using WifiActivationOrchestration.Api.Services.External;
-using WifiActivationOrchestration.Api.Tests.TestData;
+using WifiActivationOrchestration.Api.Tests.Fixtures;
 
 namespace WifiActivationOrchestration.Api.Tests.Services;
 

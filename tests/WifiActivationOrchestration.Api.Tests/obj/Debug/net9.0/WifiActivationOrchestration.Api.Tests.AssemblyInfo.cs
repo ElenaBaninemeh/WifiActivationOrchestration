@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WifiActivationOrchestration.Api.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a126ae477a63a7259be4132ba066cbb84e0fb397")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6344544c4539887428941af82ec7125a5b098441")]
 [assembly: System.Reflection.AssemblyProductAttribute("WifiActivationOrchestration.Api.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WifiActivationOrchestration.Api.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,6 +1,6 @@
 ﻿using WifiActivationOrchestration.Api.Models.External;
 
-namespace WifiActivationOrchestration.Api.Tests.TestData;
+namespace WifiActivationOrchestration.Api.Tests.Fixtures;
 
 public static class NetworkInfrastructureResponseFactory
 {
