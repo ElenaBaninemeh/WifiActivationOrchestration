@@ -1,0 +1,41 @@
+Summary
+  Generated on: 26-05-26 - 17:14:59
+  Coverage date: 26-05-26 - 17:14:55
+  Parser: Cobertura
+  Assemblies: 1
+  Classes: 19
+  Files: 12
+  Line coverage: 80.3%
+  Covered lines: 257
+  Uncovered lines: 63
+  Coverable lines: 320
+  Total lines: 580
+  Branch coverage: 80% (32 of 40)
+  Covered branches: 32
+  Total branches: 40
+  Method coverage: 98.4% (63 of 64)
+  Full method coverage: 90.6% (58 of 64)
+  Covered methods: 63
+  Fully covered methods: 58
+  Total methods: 64
+
+WifiActivationOrchestration.Api                                                        80.3%
+  Program                                                                                 0%
+  WifiActivationOrchestration.Api.Configuration.NetworkApiOptions                       100%
+  WifiActivationOrchestration.Api.Controllers.WifiActivationController                 88.8%
+  WifiActivationOrchestration.Api.Mapping.ActivationCommand                             100%
+  WifiActivationOrchestration.Api.Mapping.CustomerActivationRequestMapper              94.5%
+  WifiActivationOrchestration.Api.Models.External.NetworkControllerActivationRequest    100%
+  WifiActivationOrchestration.Api.Models.External.NetworkInfrastructureResponse         100%
+  WifiActivationOrchestration.Api.Models.External.SpeedProfile                          100%
+  WifiActivationOrchestration.Api.Models.Requests.CharacteristicValue                   100%
+  WifiActivationOrchestration.Api.Models.Requests.CustomerActivationRequest             100%
+  WifiActivationOrchestration.Api.Models.Requests.OrderItem                             100%
+  WifiActivationOrchestration.Api.Models.Requests.Service                               100%
+  WifiActivationOrchestration.Api.Models.Requests.ServiceCharacteristic                 100%
+  WifiActivationOrchestration.Api.Models.Requests.ServiceSpecification                  100%
+  WifiActivationOrchestration.Api.Models.Responses.WifiActivationResponse               100%
+  WifiActivationOrchestration.Api.Models.Results.WifiActivationResult                   100%
+  WifiActivationOrchestration.Api.Services.External.NetworkControllerClient            79.1%
+  WifiActivationOrchestration.Api.Services.External.NetworkInfrastructureClient        79.1%
+  WifiActivationOrchestration.Api.Services.WifiActivationService                       88.8%

@@ -177,6 +177,32 @@ public sealed class WifiActivationServiceTests
             result.ErrorMessage);
     }
 
+    [Fact]
+    public async Task ActivateAsync_WhenInfrastructureApiTimesOut_ReturnsDependencyTimeout()
+    {
+        var request = CustomerActivationRequestFactory.CreateValid();
+
+        _infrastructureClient
+            .GetSpeedProfilesAsync(Arg.Any<CancellationToken>())
+            .ThrowsAsync(new TaskCanceledException("Infrastructure API timeout"));
+
+        var service = CreateService();
+
+        var result = await service.ActivateAsync(request, CancellationToken.None);
+
+        Assert.Equal(WifiActivationStatus.DependencyTimeout, result.Status);
+        Assert.Null(result.Response);
+        Assert.Equal(
+            "A timeout occurred while communicating with an external network API.",
+            result.ErrorMessage);
+
+        await _controllerClient
+            .DidNotReceive()
+            .ActivateWifiAsync(
+                Arg.Any<NetworkControllerActivationRequest>(),
+                Arg.Any<CancellationToken>());
+    }
+
     private WifiActivationService CreateService()
     {
         return new WifiActivationService(

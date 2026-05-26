@@ -25,6 +25,6 @@
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\NLEB\.nuget\packages\xunit.analyzers\1.16.0</Pkgxunit_analyzers>
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\NLEB\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.4</PkgMicrosoft_CodeAnalysis_Analyzers>
-    <PkgGraphQL_Analyzers Condition=" '$(PkgGraphQL_Analyzers)' == '' ">C:\Users\NLEB\.nuget\packages\graphql.analyzers\8.5.0</PkgGraphQL_Analyzers>
+    <PkgGraphQL_Analyzers Condition=" '$(PkgGraphQL_Analyzers)' == '' ">C:\Users\NLEB\.nuget\packages\graphql.analyzers\8.2.1</PkgGraphQL_Analyzers>
   </PropertyGroup>
 </Project>
