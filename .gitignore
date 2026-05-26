@@ -13,6 +13,15 @@
 *.userosscache
 *.sln.docstates
 
+[Bb]in/
+[Oo]bj/
+
+TestResults/
+coveragereport/
+*.coverage
+coverage.cobertura.xml
+
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
