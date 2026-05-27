@@ -13,6 +13,12 @@
 *.userosscache
 *.sln.docstates
 
+# Test and coverage output
+TestResults/
+coveragereport/
+coverage.cobertura.xml
+*.coverage
+
 [Bb]in/
 [Oo]bj/
 
