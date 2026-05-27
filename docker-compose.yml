@@ -1,0 +1,29 @@
+services:
+  mockserver:
+    build:
+      context: .
+      dockerfile: tools/WifiActivationOrchestration.MockServer/Dockerfile
+    ports:
+      - "8080:8080"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5184:8080"
+    depends_on:
+      - mockserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_HTTP_PORTS: "8080"
+      NetworkApis__InfrastructureBaseUrl: "http://mockserver:8080"
+      NetworkApis__ControllerBaseUrl: "http://mockserver:8080"
+      NetworkApis__SpeedProfilesPath: "/network-infrastructure/speed-profiles"
+      NetworkApis__ActivationPath: "/network-controller/wifi/activations"
+      NetworkApis__TimeoutSeconds: "10"
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.tests

@@ -1,0 +1,28 @@
+[Bb]in/
+[Oo]bj/
+.vs/
+
+# Test and coverage output
+TestResults/
+[Tt]est[Rr]esult*/
+coveragereport/
+coverage.cobertura.xml
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
