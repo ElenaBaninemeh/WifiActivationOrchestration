@@ -1,0 +1,14 @@
+.git/
+.vs/
+
+**/bin/
+**/obj/
+
+TestResults/
+coveragereport/
+coverage.cobertura.xml
+*.coverage
+
+*.user
+*.suo
+*.rsuser

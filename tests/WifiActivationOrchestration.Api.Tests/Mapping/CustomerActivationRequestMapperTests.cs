@@ -19,13 +19,13 @@ public sealed class CustomerActivationRequestMapperTests
     {
         var request = CustomerActivationRequestFactory.CreateValid();
 
-        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
+        var activationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.NotNull(ActivationInput);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultExternalId, ActivationInput.ExternalId);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, ActivationInput.CustomerId);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, ActivationInput.CustomerAddress);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, ActivationInput.SpeedProfile);
+        Assert.NotNull(activationInput);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultExternalId, activationInput.ExternalId);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, activationInput.CustomerId);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, activationInput.CustomerAddress);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, activationInput.SpeedProfile);
     }
 
     /// <summary>
@@ -37,9 +37,9 @@ public sealed class CustomerActivationRequestMapperTests
     {
         var request = CustomerActivationRequestFactory.CreateWithoutSpeedProfile();
 
-        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
+        var activationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.Null(ActivationInput);
+        Assert.Null(activationInput);
     }
 
     /// <summary>
@@ -52,15 +52,15 @@ public sealed class CustomerActivationRequestMapperTests
 
         foreach (var characteristic in request.OrderItem!.Service!.ServiceCharacteristic)
         {
-            characteristic.Name = characteristic.Name.ToUpperInvariant();
+            characteristic.Name = characteristic.Name!.ToUpperInvariant();
         }
 
-        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
+        var activationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.NotNull(ActivationInput);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, ActivationInput.CustomerId);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, ActivationInput.CustomerAddress);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, ActivationInput.SpeedProfile);
+        Assert.NotNull(activationInput);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, activationInput.CustomerId);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, activationInput.CustomerAddress);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, activationInput.SpeedProfile);
     }
 
     /// <summary>
@@ -76,9 +76,9 @@ public sealed class CustomerActivationRequestMapperTests
             OrderItem = null
         };
 
-        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
+        var activationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.Null(ActivationInput);
+        Assert.Null(activationInput);
     }
 
     /// <summary>
@@ -98,8 +98,8 @@ public sealed class CustomerActivationRequestMapperTests
             }
         };
 
-        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
+        var activationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.Null(ActivationInput);
+        Assert.Null(activationInput);
     }
 }

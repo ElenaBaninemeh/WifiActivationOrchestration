@@ -1,8 +1,12 @@
 ﻿using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
+using WireMock.Settings;
 
-var server = WireMockServer.Start(8080);
+var server = WireMockServer.Start(new WireMockServerSettings
+{
+    Urls = ["http://0.0.0.0:8080"]
+});
 
 server
     .Given(
@@ -56,12 +60,9 @@ server
             }
             """));
 
-Console.WriteLine("WireMock server is running on http://localhost:8080");
+Console.WriteLine("WireMock server is running on http://0.0.0.0:8080");
 Console.WriteLine("Mocked endpoints:");
-Console.WriteLine("GET  /network-infrastructure/speed-profiles");
+Console.WriteLine("GET /network-infrastructure/speed-profiles");
 Console.WriteLine("POST /network-controller/wifi/activations");
-Console.WriteLine();
-Console.WriteLine("Press Enter to stop.");
-Console.ReadLine();
 
-server.Stop();
+await Task.Delay(Timeout.Infinite);

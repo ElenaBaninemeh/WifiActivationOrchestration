@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.6.11819.183 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{07C2787E-EAC7-C090-1BA3-A61EC2A24D84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WifiActivationOrchestration.MockServer", "tools\WifiActivationOrchestration.MockServer\WifiActivationOrchestration.MockServer.csproj", "{46C266D9-F230-455E-AB55-89E6E8C3417E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{82B50F93-9E3D-467F-ACB6-9C680EE1AB18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,5 +71,8 @@ Global
 		{10ABD159-00CB-49EF-B4FA-779D0C9DBD13} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{D3EDE744-16B4-46E2-A39B-1DFA57E5F1FC} = {0AB3BF05-4346-4AA6-1389-037BE0695223}
 		{46C266D9-F230-455E-AB55-89E6E8C3417E} = {07C2787E-EAC7-C090-1BA3-A61EC2A24D84}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4981C9D2-F8BA-4E73-8BDF-CE38EE93D6B4}
 	EndGlobalSection
 EndGlobal
