@@ -5,9 +5,14 @@
 **/obj/
 
 TestResults/
+[Tt]est[Rr]esult*/
 coveragereport/
 coverage.cobertura.xml
 *.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
 
 *.user
 *.suo
