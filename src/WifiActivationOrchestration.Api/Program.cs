@@ -14,7 +14,7 @@ builder.Services
     .ValidateDataAnnotations()
     .ValidateOnStart();
 
-builder.Services.AddHttpClient<INetworkInfrastructureClient, NetworkInfrastructureClient>(
+builder.Services.AddHttpClient<ISpeedProfileService, SpeedProfileService>(
     (serviceProvider, httpClient) =>
     {
         var options = serviceProvider

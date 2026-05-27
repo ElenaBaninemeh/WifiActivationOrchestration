@@ -3,15 +3,31 @@ using WifiActivationOrchestration.Api.Domain.Constants;
 
 namespace WifiActivationOrchestration.Api.Application.Mapping;
 
-public sealed record ActivationCommand(
+/// <summary>
+/// Internal command used by the application service after extracting the required
+/// WiFi activation data from the customer portal request.
+/// </summary>
+public sealed record WifiActivationInput(
     string? ExternalId,
     string CustomerId,
     string CustomerAddress,
     string SpeedProfile);
 
+/// <summary>
+/// Maps the customer portal activation request into the internal command used by
+/// the WiFi activation use case.
+/// </summary>
 public static class CustomerActivationRequestMapper
 {
-    public static ActivationCommand? ToCommand(CustomerActivationRequest request)
+    /// <summary>
+    /// Extracts the required activation values from the incoming customer request.
+    /// </summary>
+    /// <param name="request">Customer activation request received by the API.</param>
+    /// <returns>
+    /// An <see cref="WifiActivationInput"/> when all required values are present;
+    /// otherwise, <c>null</c>.
+    /// </returns>
+    public static WifiActivationInput? MapToActivationInput(CustomerActivationRequest request)
     {
         var customerId = GetCharacteristicValue(request, CharacteristicNames.CustomerId);
         var customerAddress = GetCharacteristicValue(request, CharacteristicNames.CustomerAddress);
@@ -24,26 +40,25 @@ public static class CustomerActivationRequestMapper
             return null;
         }
 
-        return new ActivationCommand(
-            request.ExternalId,
-            customerId,
-            customerAddress,
-            speedProfile);
+        return new WifiActivationInput(request.ExternalId, customerId, customerAddress, speedProfile);
     }
 
-    private static string? GetCharacteristicValue(
-        CustomerActivationRequest request,
-        string characteristicName)
+    /// <summary>
+    /// Finds a service characteristic by name and returns the matching typed value.
+    /// </summary>
+    /// <remarks>
+    /// Each characteristic stores its value in a different property of the same
+    /// value object, for example <c>CustomerId</c>, <c>CustomerAddress</c>, or
+    /// <c>SpeedProfile</c>. This method hides that request-specific structure from
+    /// the application service.
+    /// </remarks>
+    private static string? GetCharacteristicValue(CustomerActivationRequest request, string characteristicName)
     {
-        var characteristic = request
-            .OrderItem?
+        var characteristic = request.OrderItem?
             .Service?
             .ServiceCharacteristic
             .FirstOrDefault(item =>
-                string.Equals(
-                    item.Name,
-                    characteristicName,
-                    StringComparison.OrdinalIgnoreCase));
+                string.Equals(item.Name, characteristicName, StringComparison.OrdinalIgnoreCase));
 
         if (characteristic?.Value is null)
         {

@@ -3,6 +3,10 @@ using WifiActivationOrchestration.Api.Domain.Constants;
 
 namespace WifiActivationOrchestration.Api.Tests.Fixtures;
 
+/// <summary>
+/// Creates reusable customer activation requests for unit and integration tests.
+/// </summary>
+
 public static class CustomerActivationRequestFactory
 {
     public const string DefaultExternalId = "ACT-20251017-001";
@@ -11,8 +15,16 @@ public static class CustomerActivationRequestFactory
     public const string DefaultCustomerAddress = "Keizersgracht 123, 1015 CJ Amsterdam, Netherlands";
     public const string DefaultSpeedProfile = "SP-500";
 
-    public static CustomerActivationRequest CreateValid(
-        string speedProfile = DefaultSpeedProfile)
+    /// <summary>
+    /// Creates a valid customer activation request using the default test values.
+    /// </summary>
+    /// <param name="speedProfile">
+    /// Speed profile code to include in the request.
+    /// </param>
+    /// <returns>
+    /// A valid customer activation request.
+    /// </returns>
+    public static CustomerActivationRequest CreateValid(string speedProfile = DefaultSpeedProfile)
     {
         return new CustomerActivationRequest
         {
@@ -41,6 +53,12 @@ public static class CustomerActivationRequestFactory
         };
     }
 
+    /// <summary>
+    /// Creates an invalid request by removing the required speed profile characteristic.
+    /// </summary>
+    /// <returns>
+    /// A customer activation request missing the speed profile value.
+    /// </returns>
     public static CustomerActivationRequest CreateWithoutSpeedProfile()
     {
         var request = CreateValid();

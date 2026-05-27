@@ -12,6 +12,10 @@ using WireMock.Server;
 
 namespace WifiActivationOrchestration.Api.Tests.Integration;
 
+/// <summary>
+/// Integration tests for the WiFi activation flow using real HTTP clients
+/// and a WireMock server for the external network APIs.
+/// </summary>
 public sealed class WifiActivationHttpIntegrationTests : IDisposable
 {
     private const string SpeedProfilesPath = "/network-infrastructure/speed-profiles";
@@ -26,6 +30,10 @@ public sealed class WifiActivationHttpIntegrationTests : IDisposable
         _networkApiMock = WireMockServer.Start();
     }
 
+    /// <summary>
+    /// Verifies that a valid customer activation request results in the expected
+    /// HTTP request payload being sent to the external Network Controller API.
+    /// </summary>
     [Fact]
     public async Task ActivateAsync_WhenRequestIsValid_SendsExpectedHttpPayloadToNetworkController()
     {
@@ -74,6 +82,9 @@ public sealed class WifiActivationHttpIntegrationTests : IDisposable
         Assert.False(root.TryGetProperty("status", out _));
     }
 
+    /// <summary>
+    /// Creates the WiFi activation service with real HTTP-based infrastructure services.
+    /// </summary>
     private WifiActivationService CreateService()
     {
         var options = Options.Create(new NetworkApiOptions
@@ -95,10 +106,10 @@ public sealed class WifiActivationHttpIntegrationTests : IDisposable
             BaseAddress = new Uri(_networkApiMock.Url!)
         };
 
-        var infrastructureClient = new NetworkInfrastructureClient(
+        var infrastructureClient = new SpeedProfileService(
             infrastructureHttpClient,
             options,
-            NullLogger<NetworkInfrastructureClient>.Instance);
+            NullLogger<SpeedProfileService>.Instance);
 
         var controllerClient = new NetworkActivationService(
             controllerHttpClient,
@@ -111,10 +122,14 @@ public sealed class WifiActivationHttpIntegrationTests : IDisposable
             NullLogger<WifiActivationService>.Instance);
     }
 
+    /// <summary>
+    /// Configures WireMock to return an available speed profile from the
+    /// mocked Network Infrastructure API.
+    /// </summary>
     private void SetupSpeedProfilesMock()
     {
         var responseBody = JsonSerializer.Serialize(
-            NetworkInfrastructureResponseFactory.WithSpeedProfile(),
+            SpeedProfileResponseFactory.WithSpeedProfile(),
             JsonOptions);
 
         _networkApiMock
@@ -129,6 +144,10 @@ public sealed class WifiActivationHttpIntegrationTests : IDisposable
                     .WithBody(responseBody));
     }
 
+    /// <summary>
+    /// Configures WireMock to accept the WiFi activation request sent to the
+    /// mocked Network Controller API.
+    /// </summary>
     private void SetupSuccessfulControllerMock()
     {
         _networkApiMock

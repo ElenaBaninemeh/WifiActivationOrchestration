@@ -4,30 +4,31 @@ using WifiActivationOrchestration.Api.Infrastructure.Models;
 
 namespace WifiActivationOrchestration.Api.Infrastructure.Services;
 
-public sealed class NetworkInfrastructureClient : INetworkInfrastructureClient
+/// <summary>
+/// Retrieves speed profile data from the external Network Infrastructure API.
+/// </summary>
+public sealed class SpeedProfileService : ISpeedProfileService
 {
     private readonly HttpClient _httpClient;
     private readonly NetworkApiOptions _options;
-    private readonly ILogger<NetworkInfrastructureClient> _logger;
+    private readonly ILogger<SpeedProfileService> _logger;
 
-    public NetworkInfrastructureClient(
+    public SpeedProfileService(
         HttpClient httpClient,
         IOptions<NetworkApiOptions> options,
-        ILogger<NetworkInfrastructureClient> logger)
+        ILogger<SpeedProfileService> logger)
     {
         _httpClient = httpClient;
         _options = options.Value;
         _logger = logger;
     }
 
-    public async Task<NetworkInfrastructureResponse> GetSpeedProfilesAsync(
-        CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<SpeedProfileResponse> GetSpeedProfilesAsync(CancellationToken cancellationToken)
     {
         _logger.LogInformation("Retrieving speed profiles from Network Infrastructure API.");
 
-        using var response = await _httpClient.GetAsync(
-            _options.SpeedProfilesPath,
-            cancellationToken);
+        using var response = await _httpClient.GetAsync(_options.SpeedProfilesPath, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -37,9 +38,9 @@ public sealed class NetworkInfrastructureClient : INetworkInfrastructureClient
                 statusCode: response.StatusCode);
         }
 
-        var result = await response.Content.ReadFromJsonAsync<NetworkInfrastructureResponse>(
+        var result = await response.Content.ReadFromJsonAsync<SpeedProfileResponse>(
             cancellationToken);
 
-        return result ?? new NetworkInfrastructureResponse();
+        return result ?? new SpeedProfileResponse();
     }
 }

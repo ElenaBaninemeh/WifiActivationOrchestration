@@ -2,14 +2,11 @@
 
 namespace WifiActivationOrchestration.Api.Tests.Fixtures;
 
-public static class NetworkInfrastructureResponseFactory
+public static class SpeedProfileResponseFactory
 {
-    public static NetworkInfrastructureResponse WithSpeedProfile(
-        string code = "SP-500",
-        int downloadSpeedMbps = 500,
-        int uploadSpeedMbps = 100)
+    public static SpeedProfileResponse WithSpeedProfile(string code = "SP-500", int downloadSpeedMbps = 500, int uploadSpeedMbps = 100)
     {
-        return new NetworkInfrastructureResponse
+        return new SpeedProfileResponse
         {
             RequestId = "REQ-001",
             SpeedProfiles =

@@ -20,6 +20,10 @@ public sealed class WifiActivationControllerTests
         _controller = new WifiActivationController(_wifiActivationService);
     }
 
+    /// <summary>
+    /// Verifies that the controller returns HTTP 202 Accepted when the activation
+    /// service successfully accepts the WiFi activation request.
+    /// </summary>
     [Fact]
     public async Task ActivateWifiAsync_WhenServiceReturnsAccepted_ReturnsAccepted()
     {
@@ -53,6 +57,10 @@ public sealed class WifiActivationControllerTests
         Assert.Equal(500, response.DownstreamSpeed);
     }
 
+    /// <summary>
+    /// Verifies that validation failures from the application service are mapped
+    /// to HTTP 400 Bad Request with a structured ProblemDetails response.
+    /// </summary>
     [Fact]
     public async Task ActivateWifiAsync_WhenServiceReturnsInvalidRequest_ReturnsBadRequest()
     {
@@ -67,9 +75,17 @@ public sealed class WifiActivationControllerTests
             request,
             CancellationToken.None);
 
-        Assert.IsType<BadRequestObjectResult>(result.Result);
+        var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+        var problemDetails = Assert.IsType<ProblemDetails>(badRequestResult.Value);
+
+        Assert.Equal(400, problemDetails.Status);
+        Assert.Equal("Invalid WiFi activation request", problemDetails.Title);
     }
 
+    /// <summary>
+    /// Verifies that an unknown requested speed profile is mapped to
+    /// HTTP 404 Not Found with a structured ProblemDetails response.
+    /// </summary>
     [Fact]
     public async Task ActivateWifiAsync_WhenServiceReturnsSpeedProfileNotFound_ReturnsNotFound()
     {
@@ -84,9 +100,17 @@ public sealed class WifiActivationControllerTests
             request,
             CancellationToken.None);
 
-        Assert.IsType<NotFoundObjectResult>(result.Result);
+        var notFoundResult = Assert.IsType<NotFoundObjectResult>(result.Result);
+        var problemDetails = Assert.IsType<ProblemDetails>(notFoundResult.Value);
+
+        Assert.Equal(404, problemDetails.Status);
+        Assert.Equal("Speed profile not found", problemDetails.Title);
     }
 
+    /// <summary>
+    /// Verifies that failures while communicating with an external network API
+    /// are mapped to HTTP 502 Bad Gateway.
+    /// </summary>
     [Fact]
     public async Task ActivateWifiAsync_WhenServiceReturnsDependencyFailure_ReturnsBadGateway()
     {
@@ -102,9 +126,17 @@ public sealed class WifiActivationControllerTests
             CancellationToken.None);
 
         var objectResult = Assert.IsType<ObjectResult>(result.Result);
+        var problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
         Assert.Equal(502, objectResult.StatusCode);
+        Assert.Equal(502, problemDetails.Status);
+        Assert.Equal("External dependency failure", problemDetails.Title);
     }
 
+    /// <summary>
+    /// Verifies that external network API timeouts are mapped to
+    /// HTTP 504 Gateway Timeout.
+    /// </summary>
     [Fact]
     public async Task ActivateWifiAsync_WhenServiceReturnsDependencyTimeout_ReturnsGatewayTimeout()
     {
@@ -120,6 +152,10 @@ public sealed class WifiActivationControllerTests
             CancellationToken.None);
 
         var objectResult = Assert.IsType<ObjectResult>(result.Result);
+        var problemDetails = Assert.IsType<ProblemDetails>(objectResult.Value);
+
         Assert.Equal(504, objectResult.StatusCode);
+        Assert.Equal(504, problemDetails.Status);
+        Assert.Equal("External dependency timeout", problemDetails.Title);
     }
 }

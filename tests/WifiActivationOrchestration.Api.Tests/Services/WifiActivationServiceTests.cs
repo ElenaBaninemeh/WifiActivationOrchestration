@@ -9,19 +9,26 @@ using WifiActivationOrchestration.Api.Tests.Fixtures;
 
 namespace WifiActivationOrchestration.Api.Tests.Services;
 
+/// <summary>
+/// Tests for the WiFi activation application service.
+/// </summary>
 public sealed class WifiActivationServiceTests
 {
-    private readonly INetworkInfrastructureClient _infrastructureClient;
+    private readonly ISpeedProfileService _infrastructureClient;
     private readonly INetworkActivationService _controllerClient;
     private readonly ILogger<WifiActivationService> _logger;
 
     public WifiActivationServiceTests()
     {
-        _infrastructureClient = Substitute.For<INetworkInfrastructureClient>();
+        _infrastructureClient = Substitute.For<ISpeedProfileService>();
         _controllerClient = Substitute.For<INetworkActivationService>();
         _logger = Substitute.For<ILogger<WifiActivationService>>();
     }
 
+    /// <summary>
+    /// Verifies that a valid activation request resolves the selected speed profile
+    /// and sends the expected payload to the network activation service.
+    /// </summary>
     [Fact]
     public async Task ActivateAsync_WhenRequestIsValid_SendsExpectedActivationRequest()
     {
@@ -30,7 +37,7 @@ public sealed class WifiActivationServiceTests
 
         _infrastructureClient
             .GetSpeedProfilesAsync(Arg.Any<CancellationToken>())
-            .Returns(NetworkInfrastructureResponseFactory.WithSpeedProfile());
+            .Returns(SpeedProfileResponseFactory.WithSpeedProfile());
 
         var service = CreateService();
 
@@ -50,7 +57,7 @@ public sealed class WifiActivationServiceTests
         await _controllerClient
             .Received(1)
             .ActivateWifiAsync(
-                Arg.Is<NetworkControllerActivationRequest>(controllerRequest =>
+                Arg.Is<NetworkActivationRequest>(controllerRequest =>
                     controllerRequest.CustomerId == CustomerActivationRequestFactory.DefaultCustomerId &&
                     controllerRequest.CustomerAddress == CustomerActivationRequestFactory.DefaultCustomerAddress &&
                     controllerRequest.UpstreamSpeed == 100 &&
@@ -58,6 +65,10 @@ public sealed class WifiActivationServiceTests
                 Arg.Any<CancellationToken>());
     }
 
+    /// <summary>
+    /// Verifies that the service returns an invalid request result when required
+    /// activation data is missing, without calling external network APIs.
+    /// </summary>
     [Fact]
     public async Task ActivateAsync_WhenRequiredCharacteristicIsMissing_ReturnsInvalidRequest()
     {
@@ -83,10 +94,14 @@ public sealed class WifiActivationServiceTests
         await _controllerClient
             .DidNotReceive()
             .ActivateWifiAsync(
-                Arg.Any<NetworkControllerActivationRequest>(),
+                Arg.Any<NetworkActivationRequest>(),
                 Arg.Any<CancellationToken>());
     }
 
+    /// <summary>
+    /// Verifies that the service returns a speed-profile-not-found result when
+    /// the requested speed profile is not available from the infrastructure API.
+    /// </summary>
     [Fact]
     public async Task ActivateAsync_WhenSpeedProfileDoesNotExist_ReturnsSpeedProfileNotFound()
     {
@@ -98,7 +113,7 @@ public sealed class WifiActivationServiceTests
 
         _infrastructureClient
             .GetSpeedProfilesAsync(Arg.Any<CancellationToken>())
-            .Returns(NetworkInfrastructureResponseFactory.WithSpeedProfile());
+            .Returns(SpeedProfileResponseFactory.WithSpeedProfile());
 
         var service = CreateService();
 
@@ -115,10 +130,14 @@ public sealed class WifiActivationServiceTests
         await _controllerClient
             .DidNotReceive()
             .ActivateWifiAsync(
-                Arg.Any<NetworkControllerActivationRequest>(),
+                Arg.Any<NetworkActivationRequest>(),
                 Arg.Any<CancellationToken>());
     }
 
+    /// <summary>
+    /// Verifies that an HTTP failure from the speed profile service is translated
+    /// into a dependency failure result.
+    /// </summary>
     [Fact]
     public async Task ActivateAsync_WhenInfrastructureApiFails_ReturnsDependencyFailure()
     {
@@ -144,10 +163,14 @@ public sealed class WifiActivationServiceTests
         await _controllerClient
             .DidNotReceive()
             .ActivateWifiAsync(
-                Arg.Any<NetworkControllerActivationRequest>(),
+                Arg.Any<NetworkActivationRequest>(),
                 Arg.Any<CancellationToken>());
     }
 
+    /// <summary>
+    /// Verifies that an HTTP failure from the network activation service is
+    /// translated into a dependency failure result.
+    /// </summary>
     [Fact]
     public async Task ActivateAsync_WhenControllerApiFails_ReturnsDependencyFailure()
     {
@@ -156,11 +179,11 @@ public sealed class WifiActivationServiceTests
 
         _infrastructureClient
             .GetSpeedProfilesAsync(Arg.Any<CancellationToken>())
-            .Returns(NetworkInfrastructureResponseFactory.WithSpeedProfile());
+            .Returns(SpeedProfileResponseFactory.WithSpeedProfile());
 
         _controllerClient
             .ActivateWifiAsync(
-                Arg.Any<NetworkControllerActivationRequest>(),
+                Arg.Any<NetworkActivationRequest>(),
                 Arg.Any<CancellationToken>())
             .ThrowsAsync(new HttpRequestException("Controller API failure"));
 
@@ -177,6 +200,10 @@ public sealed class WifiActivationServiceTests
             result.ErrorMessage);
     }
 
+    /// <summary>
+    /// Verifies that a timeout while retrieving speed profiles is translated
+    /// into a dependency timeout result.
+    /// </summary>
     [Fact]
     public async Task ActivateAsync_WhenInfrastructureApiTimesOut_ReturnsDependencyTimeout()
     {
@@ -199,7 +226,7 @@ public sealed class WifiActivationServiceTests
         await _controllerClient
             .DidNotReceive()
             .ActivateWifiAsync(
-                Arg.Any<NetworkControllerActivationRequest>(),
+                Arg.Any<NetworkActivationRequest>(),
                 Arg.Any<CancellationToken>());
     }
 

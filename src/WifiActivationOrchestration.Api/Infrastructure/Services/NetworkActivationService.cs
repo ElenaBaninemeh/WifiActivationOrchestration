@@ -4,6 +4,9 @@ using WifiActivationOrchestration.Api.Infrastructure.Models;
 
 namespace WifiActivationOrchestration.Api.Infrastructure.Services;
 
+/// <summary>
+/// Sends WiFi activation requests to the external Network Controller API.
+/// </summary>
 public sealed class NetworkActivationService : INetworkActivationService
 {
     private readonly HttpClient _httpClient;
@@ -20,9 +23,8 @@ public sealed class NetworkActivationService : INetworkActivationService
         _logger = logger;
     }
 
-    public async Task ActivateWifiAsync(
-        NetworkControllerActivationRequest request,
-        CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task ActivateWifiAsync(NetworkActivationRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation(
             "Sending WiFi activation request to Network Controller for customer {CustomerId}.",

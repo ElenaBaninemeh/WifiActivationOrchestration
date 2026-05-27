@@ -4,34 +4,49 @@ using WifiActivationOrchestration.Api.Tests.Fixtures;
 
 namespace WifiActivationOrchestration.Api.Tests.Mapping;
 
+/// <summary>
+/// Tests for mapping the nested customer portal request into the internal
+/// WiFi activation input used by the application service.
+/// </summary>
 public sealed class CustomerActivationRequestMapperTests
 {
+    /// <summary>
+    /// Verifies that a valid request containing all required service characteristics
+    /// is mapped to an internal activation input.
+    /// </summary>
     [Fact]
-    public void ToCommand_WhenRequestHasRequiredCharacteristics_ReturnsActivationCommand()
+    public void MapToActivationInput_WhenRequestHasRequiredCharacteristics_ReturnsActivationInput()
     {
         var request = CustomerActivationRequestFactory.CreateValid();
 
-        var command = CustomerActivationRequestMapper.ToCommand(request);
+        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.NotNull(command);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultExternalId, command.ExternalId);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, command.CustomerId);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, command.CustomerAddress);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, command.SpeedProfile);
+        Assert.NotNull(ActivationInput);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultExternalId, ActivationInput.ExternalId);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, ActivationInput.CustomerId);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, ActivationInput.CustomerAddress);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, ActivationInput.SpeedProfile);
     }
 
+    /// <summary>
+    /// Verifies that the mapper returns null when the required speed profile
+    /// characteristic is missing from the request.
+    /// </summary>
     [Fact]
-    public void ToCommand_WhenSpeedProfileIsMissing_ReturnsNull()
+    public void MapToActivationInput_WhenSpeedProfileIsMissing_ReturnsNull()
     {
         var request = CustomerActivationRequestFactory.CreateWithoutSpeedProfile();
 
-        var command = CustomerActivationRequestMapper.ToCommand(request);
+        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.Null(command);
+        Assert.Null(ActivationInput);
     }
 
+    /// <summary>
+    /// Verifies that characteristic name matching is case-insensitive.
+    /// </summary>
     [Fact]
-    public void ToCommand_WhenCharacteristicNamesUseDifferentCasing_ReturnsActivationCommand()
+    public void MapToActivationInput_WhenCharacteristicNamesUseDifferentCasing_ReturnsActivationInput()
     {
         var request = CustomerActivationRequestFactory.CreateValid();
 
@@ -40,16 +55,19 @@ public sealed class CustomerActivationRequestMapperTests
             characteristic.Name = characteristic.Name.ToUpperInvariant();
         }
 
-        var command = CustomerActivationRequestMapper.ToCommand(request);
+        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.NotNull(command);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, command.CustomerId);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, command.CustomerAddress);
-        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, command.SpeedProfile);
+        Assert.NotNull(ActivationInput);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerId, ActivationInput.CustomerId);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultCustomerAddress, ActivationInput.CustomerAddress);
+        Assert.Equal(CustomerActivationRequestFactory.DefaultSpeedProfile, ActivationInput.SpeedProfile);
     }
 
+    /// <summary>
+    /// Verifies that the mapper returns null when the order item is missing.
+    /// </summary>
     [Fact]
-    public void ToCommand_WhenOrderItemIsMissing_ReturnsNull()
+    public void MapToActivationInput_WhenOrderItemIsMissing_ReturnsNull()
     {
         var request = new CustomerActivationRequest
         {
@@ -58,13 +76,16 @@ public sealed class CustomerActivationRequestMapperTests
             OrderItem = null
         };
 
-        var command = CustomerActivationRequestMapper.ToCommand(request);
+        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.Null(command);
+        Assert.Null(ActivationInput);
     }
 
+    /// <summary>
+    /// Verifies that the mapper returns null when the service object is missing.
+    /// </summary>
     [Fact]
-    public void ToCommand_WhenServiceIsMissing_ReturnsNull()
+    public void MapToActivationInput_WhenServiceIsMissing_ReturnsNull()
     {
         var request = new CustomerActivationRequest
         {
@@ -77,8 +98,8 @@ public sealed class CustomerActivationRequestMapperTests
             }
         };
 
-        var command = CustomerActivationRequestMapper.ToCommand(request);
+        var ActivationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        Assert.Null(command);
+        Assert.Null(ActivationInput);
     }
 }

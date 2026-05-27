@@ -8,29 +8,31 @@ using WifiActivationOrchestration.Api.Infrastructure.Services;
 
 namespace WifiActivationOrchestration.Api.Application.Services;
 
+/// <summary>
+/// Orchestrates the WiFi activation use case.
+/// </summary>
 public sealed class WifiActivationService : IWifiActivationService
 {
-    private readonly INetworkInfrastructureClient _infrastructureClient;
-    private readonly INetworkActivationService _controllerClient;
+    private readonly ISpeedProfileService _speedProfileService;
+    private readonly INetworkActivationService _networkActivationService;
     private readonly ILogger<WifiActivationService> _logger;
 
     public WifiActivationService(
-        INetworkInfrastructureClient infrastructureClient,
-        INetworkActivationService controllerClient,
+        ISpeedProfileService speedProfileService,
+        INetworkActivationService networkActivationService,
         ILogger<WifiActivationService> logger)
     {
-        _infrastructureClient = infrastructureClient;
-        _controllerClient = controllerClient;
+        _speedProfileService = speedProfileService;
+        _networkActivationService = networkActivationService;
         _logger = logger;
     }
 
-    public async Task<WifiActivationResult> ActivateAsync(
-        CustomerActivationRequest request,
-        CancellationToken cancellationToken)
+    ///<inheritdoc/>
+    public async Task<WifiActivationResult> ActivateAsync(CustomerActivationRequest request, CancellationToken cancellationToken)
     {
-        var command = CustomerActivationRequestMapper.ToCommand(request);
+        var activationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
 
-        if (command is null)
+        if (activationInput is null)
         {
             return WifiActivationResult.InvalidRequest(
                 "Request is missing customerId, customerAddress, or speedProfile.");
@@ -38,38 +40,37 @@ public sealed class WifiActivationService : IWifiActivationService
 
         try
         {
-            var infrastructureResponse =
-                await _infrastructureClient.GetSpeedProfilesAsync(cancellationToken);
+            var infrastructureResponse = await _speedProfileService.GetSpeedProfilesAsync(cancellationToken);
 
             var speedProfile = infrastructureResponse.SpeedProfiles.FirstOrDefault(profile =>
                 string.Equals(
                     profile.Code,
-                    command.SpeedProfile,
+                    activationInput.SpeedProfile,
                     StringComparison.OrdinalIgnoreCase));
 
             if (speedProfile is null)
             {
                 return WifiActivationResult.SpeedProfileNotFound(
-                    $"Speed profile '{command.SpeedProfile}' was not found.");
+                    $"Speed profile '{activationInput.SpeedProfile}' was not found.");
             }
 
-            var controllerRequest = new NetworkControllerActivationRequest
+            var controllerRequest = new NetworkActivationRequest
             {
-                CustomerId = command.CustomerId,
-                CustomerAddress = command.CustomerAddress,
+                CustomerId = activationInput.CustomerId,
+                CustomerAddress = activationInput.CustomerAddress,
                 UpstreamSpeed = speedProfile.UploadSpeedMbps,
                 DownstreamSpeed = speedProfile.DownloadSpeedMbps
             };
 
-            await _controllerClient.ActivateWifiAsync(
+            await _networkActivationService.ActivateWifiAsync(
                 controllerRequest,
                 cancellationToken);
 
             var response = new WifiActivationResponse
             {
-                ExternalId = command.ExternalId,
-                CustomerId = command.CustomerId,
-                CustomerAddress = command.CustomerAddress,
+                ExternalId = activationInput.ExternalId,
+                CustomerId = activationInput.CustomerId,
+                CustomerAddress = activationInput.CustomerAddress,
                 SpeedProfile = speedProfile.Code,
                 UpstreamSpeed = speedProfile.UploadSpeedMbps,
                 DownstreamSpeed = speedProfile.DownloadSpeedMbps,
@@ -83,7 +84,7 @@ public sealed class WifiActivationService : IWifiActivationService
             _logger.LogWarning(
                 exception,
                 "WiFi activation failed because an external network API returned invalid JSON for customer {CustomerId}.",
-                command.CustomerId);
+                activationInput.CustomerId);
 
             return WifiActivationResult.DependencyFailure(
                 "An external network API returned an invalid response.");
@@ -92,7 +93,7 @@ public sealed class WifiActivationService : IWifiActivationService
         {
             _logger.LogWarning(
                 "WiFi activation timed out for customer {CustomerId}.",
-                command.CustomerId);
+                activationInput.CustomerId);
 
             return WifiActivationResult.DependencyTimeout(
                 "A timeout occurred while communicating with an external network API.");
@@ -102,7 +103,7 @@ public sealed class WifiActivationService : IWifiActivationService
             _logger.LogWarning(
                 exception,
                 "WiFi activation failed while communicating with an external network API for customer {CustomerId}.",
-                command.CustomerId);
+                activationInput.CustomerId);
 
             return WifiActivationResult.DependencyFailure(
                 "Failed to communicate with an external network API.");
