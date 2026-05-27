@@ -15,9 +15,14 @@
 
 # Test and coverage output
 TestResults/
+[Tt]est[Rr]esult*/
 coveragereport/
 coverage.cobertura.xml
 *.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
 
 [Bb]in/
 [Oo]bj/
