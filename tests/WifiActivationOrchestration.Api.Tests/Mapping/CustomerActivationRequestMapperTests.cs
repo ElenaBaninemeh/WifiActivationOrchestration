@@ -102,4 +102,18 @@ public sealed class CustomerActivationRequestMapperTests
 
         Assert.Null(activationInput);
     }
+
+    /// <summary>
+    /// Verifies that the mapper rejects a request when the external activation
+    /// identifier is missing.
+    /// </summary>
+    [Fact]
+    public void MapToActivationInput_WhenExternalIdIsMissing_ReturnsNull()
+    {
+        var request = CustomerActivationRequestFactory.CreateWithoutExternalId();
+
+        var activationInput = CustomerActivationRequestMapper.MapToActivationInput(request);
+
+        Assert.Null(activationInput);
+    }
 }

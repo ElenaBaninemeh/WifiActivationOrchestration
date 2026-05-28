@@ -8,7 +8,7 @@ namespace WifiActivationOrchestration.Api.Application.Mapping;
 /// WiFi activation data from the customer portal request.
 /// </summary>
 public sealed record WifiActivationInput(
-    string? ExternalId,
+    string ExternalId,
     string CustomerId,
     string CustomerAddress,
     string SpeedProfile);
@@ -29,18 +29,24 @@ public static class CustomerActivationRequestMapper
     /// </returns>
     public static WifiActivationInput? MapToActivationInput(CustomerActivationRequest request)
     {
+        var externalId = request.ExternalId;
         var customerId = GetCharacteristicValue(request, CharacteristicNames.CustomerId);
         var customerAddress = GetCharacteristicValue(request, CharacteristicNames.CustomerAddress);
         var speedProfile = GetCharacteristicValue(request, CharacteristicNames.SpeedProfile);
 
-        if (string.IsNullOrWhiteSpace(customerId) ||
+        if (string.IsNullOrWhiteSpace(externalId) ||
+            string.IsNullOrWhiteSpace(customerId) ||
             string.IsNullOrWhiteSpace(customerAddress) ||
             string.IsNullOrWhiteSpace(speedProfile))
         {
             return null;
         }
 
-        return new WifiActivationInput(request.ExternalId, customerId, customerAddress, speedProfile);
+        return new WifiActivationInput(
+            externalId,
+            customerId,
+            customerAddress,
+            speedProfile);
     }
 
     /// <summary>

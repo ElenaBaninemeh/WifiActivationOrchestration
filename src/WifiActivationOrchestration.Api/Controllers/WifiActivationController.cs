@@ -65,7 +65,7 @@ public sealed class WifiActivationController : ControllerBase
         return result.Status switch
         {
             WifiActivationStatus.Accepted when result.Response is not null =>
-                Accepted($"/api/wifi-activations/{result.Response.ExternalId}", result.Response),
+                Accepted(result.Response),
 
             WifiActivationStatus.InvalidRequest =>
                 BadRequest(CreateProblemDetails(StatusCodes.Status400BadRequest, "Invalid WiFi activation request",result.ErrorMessage)),

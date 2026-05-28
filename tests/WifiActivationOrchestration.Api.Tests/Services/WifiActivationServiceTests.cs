@@ -84,7 +84,7 @@ public sealed class WifiActivationServiceTests
         Assert.Equal(WifiActivationStatus.InvalidRequest, result.Status);
         Assert.Null(result.Response);
         Assert.Equal(
-            "Request is missing customerId, customerAddress, or speedProfile.",
+            "Request is missing externalId, customerId, customerAddress, or speedProfile.",
             result.ErrorMessage);
 
         await _infrastructureClient

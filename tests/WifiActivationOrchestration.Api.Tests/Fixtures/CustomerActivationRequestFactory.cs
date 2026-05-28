@@ -132,4 +132,12 @@ public static class CustomerActivationRequestFactory
             }
         };
     }
+
+    public static CustomerActivationRequest CreateWithoutExternalId()
+    {
+        var request = CreateValid();
+        request.ExternalId = null;
+
+        return request;
+    }
 }

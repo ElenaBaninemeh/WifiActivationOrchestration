@@ -35,7 +35,7 @@ public sealed class WifiActivationService : IWifiActivationService
         if (activationInput is null)
         {
             return WifiActivationResult.InvalidRequest(
-                "Request is missing customerId, customerAddress, or speedProfile.");
+                "Request is missing externalId, customerId, customerAddress, or speedProfile.");
         }
 
         try

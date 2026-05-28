@@ -3,17 +3,12 @@
 /// <summary>
 /// Response returned by the API when a WiFi activation request is accepted.
 /// </summary>
-/// <remarks>
-/// This response represents the API result returned to the caller. It is different
-/// from the payload sent to the external Network Controller API, which only contains
-/// customer address and resolved speed values.
-/// </remarks>
 public sealed record WifiActivationResponse
 {
     /// <summary>
     /// Gets the external activation/order identifier received from the customer portal.
     /// </summary>
-    public string? ExternalId { get; init; }
+    public string ExternalId { get; init; } = string.Empty;
 
     /// <summary>
     /// Gets the customer identifier used for the WiFi activation.
